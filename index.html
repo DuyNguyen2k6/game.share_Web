@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GameShare - Chia Sẻ Game Miễn Phí</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0; padding: 0;
+      background-color: #1b2838;
+      color: #d1d1d1;
+      line-height: 1.6;
+      transition: background-color 0.5s, color 0.5s;
+    }
+    a { text-decoration: none; color: inherit; }
+    a:hover, a:focus { color: #4a90e2; outline: none; }
+    nav {
+      background-color: #171a21;
+      padding: 20px;
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      transition: background-color 0.5s;
+    }
+    .nav-container {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { font-size: 2.5em; font-weight: 700; color: #fff; user-select: none; }
+    .nav-links { list-style: none; display: flex; gap: 24px; margin: 0; padding: 0; }
+    .nav-links li { margin: 0; }
+    .nav-links a {
+      font-size: 1.2em; color: white; padding: 4px 8px; border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a:focus {
+      background-color: #4a90e2; color: white; outline: none;
+    }
+    #dark-mode-toggle {
+      background: none; border: none; font-size: 1.6em; color: white;
+      cursor: pointer; padding: 4px 8px; border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+    #dark-mode-toggle:hover, #dark-mode-toggle:focus { background-color: #4a90e2; outline: none; }
+    header {
+      background-color: #4a90e2;
+      padding: 100px 10px 20px; margin-top: 40px;
+      text-align: center; color: white;
+      transition: background-color 0.5s;
+    }
+    header h1 { font-size: 3.5em; margin: 0; font-weight: 900; letter-spacing: 1.5px; }
+    header p { font-size: 1.3em; margin-top: 12px; }
+    .games {
+      max-width: 1200px; margin: 40px auto; padding: 0 20px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;
+    }
+    .game-card {
+      background-color: #2a475e;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s, background-color 0.5s;
+      cursor: pointer;
+    }
+    .game-card:hover, .game-card:focus-within {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      outline: none;
+    }
+    .game-card img {
+      width: 100%; height: 180px; object-fit: cover;
+      border-radius: 12px 12px 0 0; user-select: none;
+    }
+    .game-card h2 {
+      color: #fff; font-size: 1.8em; margin: 16px 20px 8px; font-weight: 700;
+    }
+    .game-card p {
+      color: #ccc; font-size: 1.1em; margin: 0 20px 20px; flex-grow: 1; line-height: 1.5;
+    }
+    .download-btn {
+      margin: 0 20px 20px; padding: 12px 24px;
+      background: linear-gradient(135deg, #4a90e2, #357ab7);
+      color: white; font-size: 1.15em; border-radius: 8px; font-weight: 600;
+      text-align: center; transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 4px 12px rgba(53,122,183,0.3);
+      user-select: none; display: inline-block;
+    }
+    .download-btn:hover, .download-btn:focus {
+      background: linear-gradient(135deg, #357ab7, #4a90e2);
+      transform: scale(1.05); outline: none;
+    }
+    .download-btn:active { transform: scale(0.95); }
+    footer {
+      background-color: #171a21; color: white; text-align: center;
+      padding: 20px; margin-top: 60px;
+      transition: background-color 0.5s, color 0.5s;
+    }
+    body.dark-mode { background-color: #121a26; color: #d1d1d1; }
+    body.dark-mode nav { background-color: #0f1013; }
+    body.dark-mode header { background-color: #223146; color: #eee; }
+    body.dark-mode .game-card { background-color: #223146; box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+    body.dark-mode .download-btn {
+      background: linear-gradient(135deg, #357ab7, #4a90e2);
+      box-shadow: 0 4px 12px rgba(53,122,183,0.6);
+    }
+    body.dark-mode footer { background-color: #0f1013; color: #bbb; }
+    @media (max-width: 768px) {
+      .nav-container { flex-wrap: wrap; gap: 12px; }
+      .nav-links { width: 100%; justify-content: center; gap: 16px; }
+      header h1 { font-size: 2.5em; }
+      .games { grid-template-columns: 1fr; gap: 24px; }
+    }
+    a:focus, button:focus, .game-card:focus-within {
+      outline: 3px solid #4a90e2; outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo">GameShare</a>
+      <ul class="nav-links">
+        <li><a href="#home">Trang Chủ</a></li>
+        <li><a href="#games">Game</a></li>
+        <li><a href="https://www.steamtools.net/" target="_blank" rel="noopener noreferrer">Steam Tool</a></li>
+      </ul>
+      <button id="dark-mode-toggle" aria-label="Chuyển đổi chế độ tối/sáng">🌙</button>
+    </div>
+  </nav>
+
+  <header id="home">
+    <div class="container">
+      <h1>Chia Sẻ Game Miễn Phí</h1>
+      <p>Khám phá những trò chơi thú vị, miễn phí ngay bây giờ!</p>
+    </div>
+  </header>
+
+  <main class="games" id="games">
+    <article class="game-card" tabindex="0">
+      <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/02/game-hot-thumb.jpg" alt="Kho Game Hot" />
+      <h2>Kho Game!</h2>
+      <p>Khám phá và chia sẻ những trò chơi hấp dẫn từ cộng đồng game thủ, từ game indie đến các tựa game bom tấn.</p>
+      <a href="https://drive.google.com/drive/folders/1-_XCAYVmz1QGdAqNu65GnbLd9fNMmrCn" target="_blank" rel="noopener noreferrer" class="download-btn">🎮 Tải game tại đây</a>
+    </article>
+
+    <article class="game-card" tabindex="0">
+      <img src="https://i.ytimg.com/vi/8uIOxemM9UI/maxresdefault.jpg" alt="Logo Steam mới" />
+      <h2>SteamTools.net</h2>
+      <p>Trang web cung cấp công cụ hỗ trợ người dùng Steam như tra cứu Steam ID, theo dõi giá game, quản lý kho đồ.</p>
+      <a href="https://www.steamtools.net/" target="_blank" rel="noopener noreferrer" class="download-btn">🔧 Tải Steam Tool</a>
+    </article>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 GameShare. Tất cả quyền được bảo lưu.</p>
+  </footer>
+
+  <script>
+    const toggleBtn = document.getElementById('dark-mode-toggle');
+    const body = document.body;
+    function setDarkMode(enabled) {
+      if (enabled) {
+        body.classList.add('dark-mode');
+        toggleBtn.textContent = '☀️';
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        body.classList.remove('dark-mode');
+        toggleBtn.textContent = '🌙';
+        localStorage.setItem('darkMode', 'false');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeStored = localStorage.getItem('darkMode') === 'true';
+      setDarkMode(darkModeStored);
+    });
+    toggleBtn.addEventListener('click', () => {
+      setDarkMode(!body.classList.contains('dark-mode'));
+    });
+  </script>
+</body>
+</html>
